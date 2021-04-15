@@ -35,15 +35,16 @@ class UCF101Dataset(Dataset):
         self.transforms_ = transforms_
         self.test_sample_num = test_sample_num
         self.toPIL = transforms.ToPILImage()
-        class_idx_path = os.path.join(root_dir, 'split', 'classInd.txt')
+        class_idx_path = os.path.join(root_dir, 'data', 'kinetics-600_train.csv')
         self.class_idx2label = pd.read_csv(class_idx_path, header=None, sep=' ').set_index(0)[1]
         self.class_label2idx = pd.read_csv(class_idx_path, header=None, sep=' ').set_index(1)[0]
-
+        print(self.class_idx2label)
+        
         if self.train:
-            train_split_path = os.path.join(root_dir, 'split', 'trainlist0' + self.split + '.txt')
+            train_split_path = os.path.join(root_dir, 'data', 'kinetics-600_train.csv')
             self.train_split = pd.read_csv(train_split_path, header=None, sep=' ')[0]
         else:
-            test_split_path = os.path.join(root_dir, 'split', 'testlist0' + self.split + '.txt')
+            test_split_path = os.path.join(root_dir, 'data', 'kinetics-600_test.csv')
             self.test_split = pd.read_csv(test_split_path, header=None)[0]
         print('Use split'+ self.split)
 

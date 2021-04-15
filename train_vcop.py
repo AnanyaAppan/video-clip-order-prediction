@@ -20,6 +20,7 @@ from models.c3d import C3D
 from models.r3d import R3DNet
 from models.r21d import R2Plus1DNet
 from models.vcopn import VCOPN
+from models.i3d import InceptionI3d
 
 
 def order_class_index(order):
@@ -172,7 +173,10 @@ if __name__ == '__main__':
         base = R3DNet(layer_sizes=(1,1,1,1), with_classifier=False)
     elif args.model == 'r21d':   
         base = R2Plus1DNet(layer_sizes=(1,1,1,1), with_classifier=False)
-    vcopn = VCOPN(base_network=base, feature_size=512, tuple_len=args.tl).to(device)
+    elif argsmmodel == 'i3d':
+        base = InceptionI3d(600,in_channels=3)
+    # vcopn = VCOPN(base_network=base, feature_size=512, tuple_len=args.tl).to(device)
+    vcopn = VCOPN(base_network=base, feature_size=1024, tuple_len=args.tl).to(device) # for i3d
 
     if args.mode == 'train':  ########### Train #############
         if args.ckpt:  # resume training
@@ -191,7 +195,7 @@ if __name__ == '__main__':
             transforms.RandomCrop(112),
             transforms.ToTensor()
         ])
-        train_dataset = UCF101VCOPDataset('data/ucf101', args.cl, args.it, args.tl, True, train_transforms)
+        train_dataset = UCF101VCOPDataset('../../ActivityNet/Crawler/Kinetics/', args.cl, args.it, args.tl, True, train_transforms)
         # split val for 800 videos
         train_dataset, val_dataset = random_split(train_dataset, (len(train_dataset)-800, 800))
         print('TRAIN video number: {}, VAL video number: {}.'.format(len(train_dataset), len(val_dataset)))
