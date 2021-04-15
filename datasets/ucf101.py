@@ -213,14 +213,13 @@ class UCF101VCOPDataset(Dataset):
         if self.train:
             vcop_train_split_name = 'vcop_train_{}_{}_{}.txt'.format(clip_len, interval, tuple_len)
             vcop_train_split_path = os.path.join(root_dir, 'data', 'kinetics-600_train.csv')
-            self.train_split = pd.read_csv(vcop_train_split_path)[:4]
+            self.train_split = pd.read_csv(vcop_train_split_path)
             print(self.train_split[:5])
             print(len(self.train_split))
-            print(self.train_split[0][0])
         else:
             vcop_test_split_name = 'vcop_test_{}_{}_{}.txt'.format(clip_len, interval, tuple_len)
             vcop_test_split_path = os.path.join(root_dir, 'data', 'kinetics-600_test.csv')
-            self.test_split = pd.read_csv(vcop_test_split_path)[:4]
+            self.test_split = pd.read_csv(vcop_test_split_path)
 
     def __len__(self):
         if self.train:
@@ -235,15 +234,15 @@ class UCF101VCOPDataset(Dataset):
             tuple_order (tensor): [tuple_len]
         """
         if self.train:
-            label = self.train_split[idx][0]
-            videoname = self.train_split[idx][1]
-            start_time = self.train_split[idx][2]
-            end_time = self.train_split[idx][3]
+            label = self.train_split["label"][idx]
+            videoname = self.train_split["youtube_id"][idx]
+            start_time = self.train_split["time_start"][idx]
+            end_time = self.train_split["time_end"][idx]
         else:
-            videoname = self.test_split[idx][1]
-            label = self.test_split[idx][0]
-            start_time = self.test_split[idx][2]
-            end_time = self.test_split[idx][3]
+            videoname = self.test_split["label"][idx]
+            label = self.test_split["youtube_id"][idx]
+            start_time = self.test_split["time_start"][idx]
+            end_time = self.test_split["time_end"][idx]
         
         videofile = videoname+'_'+str(start_time).zfill(6)+'_'+str(end_time).zfill(6)+".mp4"
         filename = os.path.join(self.root_dir, 'dataset', label, videofile)
