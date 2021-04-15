@@ -213,12 +213,14 @@ class UCF101VCOPDataset(Dataset):
         if self.train:
             vcop_train_split_name = 'vcop_train_{}_{}_{}.txt'.format(clip_len, interval, tuple_len)
             vcop_train_split_path = os.path.join(root_dir, 'data', 'kinetics-600_train.csv')
-            self.train_split = pd.read_csv(vcop_train_split_path, header=None)[:4]
+            self.train_split = pd.read_csv(vcop_train_split_path)[:4]
             print(self.train_split[:5])
+            print(len(self.train_split))
+            print(self.train_split[0][0])
         else:
             vcop_test_split_name = 'vcop_test_{}_{}_{}.txt'.format(clip_len, interval, tuple_len)
             vcop_test_split_path = os.path.join(root_dir, 'data', 'kinetics-600_test.csv')
-            self.test_split = pd.read_csv(vcop_test_split_path, header=None)[:4]
+            self.test_split = pd.read_csv(vcop_test_split_path)[:4]
 
     def __len__(self):
         if self.train:
