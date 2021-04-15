@@ -38,7 +38,6 @@ class UCF101Dataset(Dataset):
         class_idx_path = os.path.join(root_dir, 'data', 'kinetics-600_train.csv')
         self.class_idx2label = pd.read_csv(class_idx_path, header=None, sep=' ').set_index(0)[1]
         self.class_label2idx = pd.read_csv(class_idx_path, header=None, sep=' ').set_index(1)[0]
-        print(self.class_idx2label)
 
         if self.train:
             train_split_path = os.path.join(root_dir, 'data', 'kinetics-600_train.csv')
@@ -214,8 +213,6 @@ class UCF101VCOPDataset(Dataset):
             vcop_train_split_name = 'vcop_train_{}_{}_{}.txt'.format(clip_len, interval, tuple_len)
             vcop_train_split_path = os.path.join(root_dir, 'data', 'kinetics-600_train.csv')
             self.train_split = pd.read_csv(vcop_train_split_path)
-            print(self.train_split[:5])
-            print(len(self.train_split))
         else:
             vcop_test_split_name = 'vcop_test_{}_{}_{}.txt'.format(clip_len, interval, tuple_len)
             vcop_test_split_path = os.path.join(root_dir, 'data', 'kinetics-600_test.csv')
@@ -246,9 +243,7 @@ class UCF101VCOPDataset(Dataset):
         
         videofile = videoname+'_'+str(start_time).zfill(6)+'_'+str(end_time).zfill(6)+".mp4"
         filename = os.path.join(self.root_dir, 'dataset', label, videofile)
-        print(filename)
         videodata = skvideo.io.vread(filename)
-        print(videodata)
         length, height, width, channel = videodata.shape
 
         tuple_clip = []
