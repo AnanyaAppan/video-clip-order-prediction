@@ -135,8 +135,6 @@ class UCF101ClipRetrievalDataset(Dataset):
         class_idx_path = os.path.join(root_dir, 'data', 'kinetics-600_train.csv')
         self.class_idx2label = pd.read_csv(class_idx_path, header=None, sep=' ').set_index(0)[1]
         self.class_label2idx = pd.read_csv(class_idx_path, header=None, sep=' ').set_index(1)[0]
-        print(self.class_idx2label)
-        print(self.class_label2idx)
 
         if self.train:
             train_split_path = os.path.join(root_dir, 'data', 'kinetics-600_train.csv')
@@ -214,11 +212,12 @@ class UCF101VCOPDataset(Dataset):
 
         if self.train:
             vcop_train_split_name = 'vcop_train_{}_{}_{}.txt'.format(clip_len, interval, tuple_len)
-            vcop_train_split_path = os.path.join(root_dir, 'split', vcop_train_split_name)
+            vcop_train_split_path = os.path.join(root_dir, 'data', 'kinetics-600_train.csv')
             self.train_split = pd.read_csv(vcop_train_split_path, header=None)[0]
+            print(self.train_split[:5])
         else:
             vcop_test_split_name = 'vcop_test_{}_{}_{}.txt'.format(clip_len, interval, tuple_len)
-            vcop_test_split_path = os.path.join(root_dir, 'split', vcop_test_split_name)
+            vcop_test_split_path = os.path.join(root_dir, 'data', 'kinetics-600_test.csv')
             self.test_split = pd.read_csv(vcop_test_split_path, header=None)[0]
 
     def __len__(self):
