@@ -244,7 +244,9 @@ class UCF101VCOPDataset(Dataset):
         
         videofile = videoname+'_'+str(start_time).zfill(6)+'_'+str(end_time).zfill(6)+".mp4"
         filename = os.path.join(self.root_dir, 'dataset', label, videofile)
+        print(filename)
         videodata = skvideo.io.vread(filename)
+        print(videodata)
         length, height, width, channel = videodata.shape
 
         tuple_clip = []
