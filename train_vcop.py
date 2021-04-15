@@ -142,7 +142,7 @@ def parse_args():
     parser.add_argument('--desp', type=str, help='additional description')
     parser.add_argument('--epochs', type=int, default=300, help='number of total epochs to run')
     parser.add_argument('--start-epoch', type=int, default=1, help='manual epoch number (useful on restarts)')
-    parser.add_argument('--bs', type=int, default=8, help='mini-batch size')
+    parser.add_argument('--bs', type=int, default=1, help='mini-batch size')
     parser.add_argument('--workers', type=int, default=4, help='number of data loading workers')
     parser.add_argument('--pf', type=int, default=100, help='print frequency every batch')
     parser.add_argument('--seed', type=int, default=632, help='seed for initializing training.')
