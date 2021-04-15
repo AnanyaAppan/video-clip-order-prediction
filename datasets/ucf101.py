@@ -39,7 +39,7 @@ class UCF101Dataset(Dataset):
         self.class_idx2label = pd.read_csv(class_idx_path, header=None, sep=' ').set_index(0)[1]
         self.class_label2idx = pd.read_csv(class_idx_path, header=None, sep=' ').set_index(1)[0]
         print(self.class_idx2label)
-        
+
         if self.train:
             train_split_path = os.path.join(root_dir, 'data', 'kinetics-600_train.csv')
             self.train_split = pd.read_csv(train_split_path, header=None, sep=' ')[0]
@@ -132,15 +132,17 @@ class UCF101ClipRetrievalDataset(Dataset):
         self.train = train
         self.transforms_ = transforms_
         self.toPIL = transforms.ToPILImage()
-        class_idx_path = os.path.join(root_dir, 'split', 'classInd.txt')
+        class_idx_path = os.path.join(root_dir, 'data', 'kinetics-600_train.csv')
         self.class_idx2label = pd.read_csv(class_idx_path, header=None, sep=' ').set_index(0)[1]
         self.class_label2idx = pd.read_csv(class_idx_path, header=None, sep=' ').set_index(1)[0]
+        print(self.class_idx2label)
+        print(self.class_label2idx)
 
         if self.train:
-            train_split_path = os.path.join(root_dir, 'split', 'trainlist01.txt')
+            train_split_path = os.path.join(root_dir, 'data', 'kinetics-600_train.csv')
             self.train_split = pd.read_csv(train_split_path, header=None, sep=' ')[0]
         else:
-            test_split_path = os.path.join(root_dir, 'split', 'testlist01.txt')
+            test_split_path = os.path.join(root_dir, 'data', 'kinetics-600_test.csv')
             self.test_split = pd.read_csv(test_split_path, header=None)[0]
 
     def __len__(self):
