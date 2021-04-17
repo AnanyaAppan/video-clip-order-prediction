@@ -215,7 +215,7 @@ if __name__ == '__main__':
                     writer.add_video('train/tuple_clips', tuple_clips[:, i, :, :, :, :], i, fps=8)
                     writer.add_text('train/tuple_orders', str(tuple_orders[:, i].tolist()), i)
                 tuple_clips = tuple_clips.to(device)
-                writer.add_graph(vcopn, tuple_clips)
+                # writer.add_graph(vcopn, tuple_clips)
                 break
             # save init params at step 0
             for name, param in vcopn.named_parameters():
