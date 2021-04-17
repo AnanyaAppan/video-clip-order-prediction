@@ -14,4 +14,4 @@ for index, row in data.iterrows():
     if not path.exists(filename):
         print("dropped" + str(index))
         data.drop(index, inplace=True)
-data.to_csv(root + "data/kinetics-600_train_modified.csv")
+data.to_csv("./kinetics-600_train_modified.csv")
