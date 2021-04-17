@@ -144,7 +144,7 @@ def parse_args():
     parser.add_argument('--start-epoch', type=int, default=1, help='manual epoch number (useful on restarts)')
     parser.add_argument('--bs', type=int, default=1, help='mini-batch size')
     parser.add_argument('--workers', type=int, default=4, help='number of data loading workers')
-    parser.add_argument('--pf', type=int, default=100, help='print frequency every batch')
+    parser.add_argument('--pf', type=int, default=10, help='print frequency every batch') # before 100 
     parser.add_argument('--seed', type=int, default=632, help='seed for initializing training.')
     args = parser.parse_args()
     return args
