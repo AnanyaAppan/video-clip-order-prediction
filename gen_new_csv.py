@@ -12,5 +12,6 @@ for index, row in data.iterrows():
     videofile = videoname+'_'+str(start_time).zfill(6)+'_'+str(end_time).zfill(6)+".mp4"
     filename = os.path.join(root, 'dataset', label, videofile)
     if not path.exists(filename):
+        print("dropped" + str(index))
         data.drop(index, inplace=True)
 data.to_csv(root + "data/kinetics-600_train_modified.csv")
