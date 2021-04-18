@@ -194,7 +194,7 @@ if __name__ == '__main__':
         train_transforms = transforms.Compose([
             # transforms.Resize((128, 171)),  # smaller edge to 128
             transforms.Resize((226, 226)),  # smaller edge to 128
-            transforms.RandomCrop(112),
+            transforms.RandomCrop(226),
             transforms.ToTensor()
         ])
         train_dataset = UCF101VCOPDataset('/home/hdd2/ananya/Autism/ActivityNet/Crawler/Kinetics/', args.cl, args.it, args.tl, True, train_transforms)
