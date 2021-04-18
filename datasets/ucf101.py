@@ -177,11 +177,11 @@ class UCF101ClipRetrievalDataset(Dataset):
                     random.seed(seed)
                     frame = self.toPIL(frame) # PIL image
                     frame = self.transforms_(frame) # tensor [C x H x W]
-                    if width < 226 or height< 226:
-                        d = 226.-min(width,height)
-                        sc = 1+d/min(width,height)
-                        frame = cv2.resize(frame,dsize=(0,0),fx=sc,fy=sc)
-                    frame = (frame/255.)*2 - 1
+                    # if width < 226 or height< 226:
+                    #     d = 226.-min(width,height)
+                    #     sc = 1+d/min(width,height)
+                    #     frame = cv2.resize(frame,dsize=(0,0),fx=sc,fy=sc)
+                    # frame = (frame/255.)*2 - 1
                     frames.append(frame)
                     trans_clip.append(frame)
                 # (T x C X H x W) to (C X T x H x W)

@@ -192,7 +192,8 @@ if __name__ == '__main__':
         writer = SummaryWriter(log_dir)
 
         train_transforms = transforms.Compose([
-            transforms.Resize((128, 171)),  # smaller edge to 128
+            # transforms.Resize((128, 171)),  # smaller edge to 128
+            ransforms.Resize((226, 226)),  # smaller edge to 128
             transforms.RandomCrop(112),
             transforms.ToTensor()
         ])
