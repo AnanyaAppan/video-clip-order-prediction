@@ -42,7 +42,7 @@ def train(args, model, criterion, optimizer, device, train_dataloader, writer, e
     for i, data in enumerate(train_dataloader, 1):
         # get inputs
         tuple_clips, tuple_orders = data
-        if(tuple_clips==None): continue
+        if(tuple_clips==[]): continue
         inputs = tuple_clips.to(device)
         targets = [order_class_index(order) for order in tuple_orders]
         targets = torch.tensor(targets).to(device)
@@ -82,6 +82,7 @@ def validate(args, model, criterion, device, val_dataloader, writer, epoch):
     for i, data in enumerate(val_dataloader):
         # get inputs
         tuple_clips, tuple_orders = data
+        if(tuple_clips==[]): continue
         inputs = tuple_clips.to(device)
         targets = [order_class_index(order) for order in tuple_orders]
         targets = torch.tensor(targets).to(device)
@@ -199,7 +200,7 @@ if __name__ == '__main__':
         ])
         train_dataset = UCF101VCOPDataset('/home/hdd2/ananya/Autism/ActivityNet/Crawler/Kinetics/', args.cl, args.it, args.tl, True, train_transforms)
         # split val for 800 videos
-        train_dataset, val_dataset = random_split(train_dataset, (len(train_dataset)-800, 800))
+        train_dataset, val_dataset = random_split(train_dataset, (len(train_dataset)-50000, 50000))
         print('TRAIN video number: {}, VAL video number: {}.'.format(len(train_dataset), len(val_dataset)))
         train_dataloader = DataLoader(train_dataset, batch_size=args.bs, shuffle=True,
                                     num_workers=args.workers, pin_memory=True)

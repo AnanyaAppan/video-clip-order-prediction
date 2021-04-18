@@ -258,7 +258,7 @@ class UCF101VCOPDataset(Dataset):
         
         # random select tuple for train, deterministic random select for test
         if self.train:
-            if(length < self.tuple_total_frames): return None,None
+            if(length < self.tuple_total_frames): return [],[]
             tuple_start = random.randint(0, length - self.tuple_total_frames)
         else:
             random.seed(idx)
