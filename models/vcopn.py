@@ -32,7 +32,6 @@ class VCOPN(nn.Module):
         f = []  # clip features
         for i in range(self.tuple_len):
             clip = tuple[:, i, :, :, :, :]
-            print(clip.shape)
             f.append(self.base_network(clip))
 
         pf = []  # pairwise concat
