@@ -198,7 +198,7 @@ if __name__ == '__main__':
             transforms.RandomCrop(226),
             transforms.ToTensor()
         ])
-        train_dataset = UCF101VCOPDataset('/home/hdd2/ananya/Autism/ActivityNet/Crawler/Kinetics/', args.cl, args.it, args.tl, True, train_transforms)[:10]
+        train_dataset = UCF101VCOPDataset('/home/hdd2/ananya/Autism/ActivityNet/Crawler/Kinetics/', args.cl, args.it, args.tl, True, train_transforms)
         # split val for 800 videos
         train_dataset, val_dataset = random_split(train_dataset, (len(train_dataset)-51000, 51000))
         print('TRAIN video number: {}, VAL video number: {}.'.format(len(train_dataset), len(val_dataset)))
