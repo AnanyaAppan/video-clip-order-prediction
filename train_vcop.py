@@ -146,7 +146,7 @@ def parse_args():
     parser.add_argument('--start-epoch', type=int, default=1, help='manual epoch number (useful on restarts)')
     parser.add_argument('--bs', type=int, default=1, help='mini-batch size')
     parser.add_argument('--workers', type=int, default=4, help='number of data loading workers')
-    parser.add_argument('--pf', type=int, default=100, help='print frequency every batch') # before 100 
+    parser.add_argument('--pf', type=int, default=10, help='print frequency every batch') # before 100 
     parser.add_argument('--seed', type=int, default=632, help='seed for initializing training.')
     args = parser.parse_args()
     return args
@@ -200,12 +200,12 @@ if __name__ == '__main__':
         ])
         train_dataset = UCF101VCOPDataset('/home/hdd2/ananya/Autism/ActivityNet/Crawler/Kinetics/', args.cl, args.it, args.tl, True, train_transforms)[:10]
         # split val for 800 videos
-        train_dataset, val_dataset = random_split(train_dataset, (len(train_dataset)-5, 5))
+        train_dataset, val_dataset = random_split(train_dataset, (len(train_dataset)-51000, 51000))
         print('TRAIN video number: {}, VAL video number: {}.'.format(len(train_dataset), len(val_dataset)))
         train_dataloader = DataLoader(train_dataset, batch_size=args.bs, shuffle=True,
-                                    num_workers=args.workers, pin_memory=True)
+                                    num_workers=args.workers, pin_memory=True)[:10]
         val_dataloader = DataLoader(val_dataset, batch_size=args.bs, shuffle=False,
-                                    num_workers=args.workers, pin_memory=True)
+                                    num_workers=args.workers, pin_memory=True)[:10]
 
         if args.ckpt:
             pass
