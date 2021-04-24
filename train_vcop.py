@@ -68,9 +68,9 @@ def train(args, model, criterion, optimizer, device, train_dataloader, writer, e
             running_loss = 0.0
             correct = 0
     # summary params and grads per eopch
-    for name, param in model.named_parameters():
-        writer.add_histogram('params/{}'.format(name), param, epoch)
-        writer.add_histogram('grads/{}'.format(name), param.grad, epoch)
+    # for name, param in model.named_parameters():
+    #     writer.add_histogram('params/{}'.format(name), param, epoch)
+    #     writer.add_histogram('grads/{}'.format(name), param.grad, epoch)
 
 
 def validate(args, model, criterion, device, val_dataloader, writer, epoch):
@@ -198,9 +198,9 @@ if __name__ == '__main__':
             transforms.RandomCrop(226),
             transforms.ToTensor()
         ])
-        train_dataset = UCF101VCOPDataset('/home/hdd2/ananya/Autism/ActivityNet/Crawler/Kinetics/', args.cl, args.it, args.tl, True, train_transforms)
+        train_dataset = UCF101VCOPDataset('/home/hdd2/ananya/Autism/ActivityNet/Crawler/Kinetics/', args.cl, args.it, args.tl, True, train_transforms)[:10]
         # split val for 800 videos
-        train_dataset, val_dataset = random_split(train_dataset, (len(train_dataset)-51000, 51000))
+        train_dataset, val_dataset = random_split(train_dataset, (len(train_dataset)-5, 5))
         print('TRAIN video number: {}, VAL video number: {}.'.format(len(train_dataset), len(val_dataset)))
         train_dataloader = DataLoader(train_dataset, batch_size=args.bs, shuffle=True,
                                     num_workers=args.workers, pin_memory=True)
@@ -238,8 +238,8 @@ if __name__ == '__main__':
             # scheduler.step(val_loss)         
             writer.add_scalar('train/lr', optimizer.param_groups[0]['lr'], epoch)
             # save model every 20 epoches
-            if epoch % 20 == 0:
-                torch.save(vcopn.state_dict(), os.path.join(log_dir, 'model_{}.pt'.format(epoch)))
+            # if epoch % 20 == 0:
+            torch.save(vcopn.state_dict(), os.path.join(log_dir, 'model_{}.pt'.format(epoch)))
             # save model for the best val
             if val_loss < prev_best_val_loss:
                 model_path = os.path.join(log_dir, 'best_model_{}.pt'.format(epoch))
