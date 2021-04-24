@@ -323,6 +323,7 @@ class InceptionI3d(nn.Module):
         for end_point in self.VALID_ENDPOINTS:
             if end_point in self.end_points:
                 x = self._modules[end_point](x) # use _modules to work with dataparallel
+        print(x.shape)
         return torch.reshape(self.avg_pool(x),(1,4096)) # return extracted features
 
         x = self.logits(self.dropout(self.avg_pool(x)))
