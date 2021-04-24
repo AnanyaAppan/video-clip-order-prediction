@@ -42,7 +42,7 @@ def train(args, model, criterion, optimizer, device, train_dataloader, writer, e
     for i, data in enumerate(train_dataloader, 1):
         # get inputs
         tuple_clips, tuple_orders = data
-        if(tuple_clips==[]): continue
+        if([] in tuple_clips): continue
         inputs = tuple_clips.to(device)
         targets = [order_class_index(order) for order in tuple_orders]
         targets = torch.tensor(targets).to(device)
