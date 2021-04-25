@@ -22,6 +22,9 @@ from models.r21d import R2Plus1DNet
 from models.vcopn import VCOPN
 from models.i3d import InceptionI3d
 
+train_batches_per_epoch = 2000
+val_batches_per_epoch = 500
+
 
 def order_class_index(order):
     """Return the index of the order in its full permutation.
@@ -41,7 +44,7 @@ def train(args, model, criterion, optimizer, device, train_dataloader, writer, e
     correct = 0
     for i, data in enumerate(train_dataloader, 1):
         # get inputs
-        print("i = " + str(i))
+        if(i > train_batches_per_epoch): break
         tuple_clips, tuple_orders = data
         if(tuple_clips == []): continue
         inputs = tuple_clips.to(device)
@@ -63,7 +66,7 @@ def train(args, model, criterion, optimizer, device, train_dataloader, writer, e
             avg_loss = running_loss / args.pf
             avg_acc = correct / (args.pf * args.bs)
             print('[TRAIN] epoch-{}, batch-{}, loss: {:.3f}, acc: {:.3f}'.format(epoch, i, avg_loss, avg_acc))
-            step = (epoch-1)*len(train_dataloader) + i
+            step = (epoch-1)*train_batches_per_epoch*args.bs + i
             writer.add_scalar('train/CrossEntropyLoss', avg_loss, step)
             writer.add_scalar('train/Accuracy', avg_acc, step)
             running_loss = 0.0
@@ -82,6 +85,7 @@ def validate(args, model, criterion, device, val_dataloader, writer, epoch):
     correct = 0
     for i, data in enumerate(val_dataloader):
         # get inputs
+        if(i > 500): break
         tuple_clips, tuple_orders = data
         if(tuple_clips==[]): continue
         inputs = tuple_clips.to(device)
@@ -95,8 +99,8 @@ def validate(args, model, criterion, device, val_dataloader, writer, epoch):
         pts = torch.argmax(outputs, dim=1)
         correct += torch.sum(targets == pts).item()
         # print('correct: {}, {}, {}'.format(correct, targets, pts))
-    avg_loss = total_loss / len(val_dataloader)
-    avg_acc = correct / len(val_dataloader.dataset)
+    avg_loss = total_loss / val_batches_per_epoch
+    avg_acc = correct / val_batches_per_epoch
     writer.add_scalar('val/CrossEntropyLoss', avg_loss, epoch)
     writer.add_scalar('val/Accuracy', avg_acc, epoch)
     print('[VAL] loss: {:.3f}, acc: {:.3f}'.format(avg_loss, avg_acc))
@@ -146,7 +150,7 @@ def parse_args():
     parser.add_argument('--epochs', type=int, default=300, help='number of total epochs to run')
     parser.add_argument('--start-epoch', type=int, default=1, help='manual epoch number (useful on restarts)')
     parser.add_argument('--bs', type=int, default=1, help='mini-batch size')
-    parser.add_argument('--workers', type=int, default=4, help='number of data loading workers')
+    parser.add_argument('--workers', type=int, default=8, help='number of data loading workers')
     parser.add_argument('--pf', type=int, default=100, help='print frequency every batch') # before 100 
     parser.add_argument('--seed', type=int, default=632, help='seed for initializing training.')
     args = parser.parse_args()
@@ -201,7 +205,7 @@ if __name__ == '__main__':
         ])
         train_dataset = UCF101VCOPDataset('/home/hdd2/ananya/Autism/ActivityNet/Crawler/Kinetics/', args.cl, args.it, args.tl, True, train_transforms)
         # split val for 800 videos
-        train_dataset, val_dataset = random_split(train_dataset, (len(train_dataset)-51000, 51000))
+        train_dataset, val_dataset = random_split(train_dataset, (len(train_dataset)-10000, 10000))
         print('TRAIN video number: {}, VAL video number: {}.'.format(len(train_dataset), len(val_dataset)))
         train_dataloader = DataLoader(train_dataset, batch_size=args.bs, shuffle=True,
                                     num_workers=args.workers, pin_memory=True)
