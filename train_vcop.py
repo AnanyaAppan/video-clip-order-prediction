@@ -43,7 +43,7 @@ def train(args, model, criterion, optimizer, device, train_dataloader, writer, e
         # get inputs
         print("i = " + str(i))
         tuple_clips, tuple_orders = data
-        if([] in tuple_clips): continue
+        if(tuple_clips == []): continue
         inputs = tuple_clips.to(device)
         targets = [order_class_index(order) for order in tuple_orders]
         targets = torch.tensor(targets).to(device)
@@ -145,7 +145,7 @@ def parse_args():
     parser.add_argument('--desp', type=str, help='additional description')
     parser.add_argument('--epochs', type=int, default=300, help='number of total epochs to run')
     parser.add_argument('--start-epoch', type=int, default=1, help='manual epoch number (useful on restarts)')
-    parser.add_argument('--bs', type=int, default=4, help='mini-batch size')
+    parser.add_argument('--bs', type=int, default=1, help='mini-batch size')
     parser.add_argument('--workers', type=int, default=4, help='number of data loading workers')
     parser.add_argument('--pf', type=int, default=100, help='print frequency every batch') # before 100 
     parser.add_argument('--seed', type=int, default=632, help='seed for initializing training.')
