@@ -41,6 +41,7 @@ def train(args, model, criterion, optimizer, device, train_dataloader, writer, e
     correct = 0
     for i, data in enumerate(train_dataloader, 1):
         # get inputs
+        print("i = " + str(i))
         tuple_clips, tuple_orders = data
         if([] in tuple_clips): continue
         inputs = tuple_clips.to(device)
