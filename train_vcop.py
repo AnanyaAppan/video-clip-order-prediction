@@ -36,15 +36,16 @@ def order_class_index(order):
     return classes.index(tuple(order.tolist()))
 
 
-def train(args, model, criterion, optimizer, device, train_dataloader, writer, epoch, time_start):
+def train(args, model, criterion, optimizer, device, train_dataloader, writer, epoch):
     torch.set_grad_enabled(True)
     model.train()
 
     running_loss = 0.0
     correct = 0
+    time_start = time.time()
     for i, data in enumerate(train_dataloader, 1):
         # get inputs
-        print("retrieval time = {:.2f} s".format(time.time() - time_start))
+        # print("retrieval time = {:.2f} s".format(time.time() - time_start))
         if(i > train_batches_per_epoch): break
         tuple_clips, tuple_orders = data
         if(tuple_clips == []): continue
@@ -56,12 +57,12 @@ def train(args, model, criterion, optimizer, device, train_dataloader, writer, e
         # forward and backward
         before_fpass = time.time()
         outputs = model(inputs) # return logits here
-        print("forward pass time = {:.2f} s".format(time.time() - before_fpass))
+        # print("forward pass time = {:.2f} s".format(time.time() - before_fpass))
         before_bpass = time.time()
         loss = criterion(outputs, targets)
         loss.backward()
         optimizer.step()
-        print("backward pass time = {:.2f} s".format(time.time() - before_fpass))
+        # print("backward pass time = {:.2f} s".format(time.time() - before_fpass))
         # compute loss and acc
         running_loss += loss.item()
         pts = torch.argmax(outputs, dim=1)
@@ -242,7 +243,7 @@ if __name__ == '__main__':
         prev_best_model_path = None
         for epoch in range(args.start_epoch, args.start_epoch+args.epochs):
             time_start = time.time()
-            train(args, vcopn, criterion, optimizer, device, train_dataloader, writer, epoch, time_start)
+            train(args, vcopn, criterion, optimizer, device, train_dataloader, writer, epoch)
             print('Epoch time: {:.2f} s.'.format(time.time() - time_start))
             val_loss = validate(args, vcopn, criterion, device, val_dataloader, writer, epoch)
             # scheduler.step(val_loss)         
