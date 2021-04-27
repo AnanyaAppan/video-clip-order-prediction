@@ -188,8 +188,8 @@ if __name__ == '__main__':
         base = R2Plus1DNet(layer_sizes=(1,1,1,1), with_classifier=False)
     elif args.model == 'i3d':
         base = InceptionI3d(600,in_channels=3)
-    vcopn = VCOPN(base_network=base, feature_size=512, tuple_len=args.tl).to(device)
-    # vcopn = VCOPN(base_network=base, feature_size=4096, tuple_len=args.tl).to(device) # for i3d
+    # vcopn = VCOPN(base_network=base, feature_size=512, tuple_len=args.tl).to(device)
+    vcopn = VCOPN(base_network=base, feature_size=4096, tuple_len=args.tl).to(device) # for i3d
 
     if args.mode == 'train':  ########### Train #############
         if args.ckpt:  # resume training
@@ -204,10 +204,10 @@ if __name__ == '__main__':
         writer = SummaryWriter(log_dir)
 
         train_transforms = transforms.Compose([
-            transforms.Resize((128, 171)),  # smaller edge to 128
-            transforms.RandomCrop(112),
-            # transforms.Resize((226, 226)),  
-            # transforms.RandomCrop(226),
+            # transforms.Resize((128, 171)),  # smaller edge to 128
+            # transforms.RandomCrop(112),
+            transforms.Resize((113, 113)),  
+            transforms.RandomCrop(113),
             transforms.ToTensor()
         ])
         train_dataset = UCF101VCOPDataset('/home/hdd2/ananya/Autism/ActivityNet/Crawler/Kinetics/', args.cl, args.it, args.tl, True, train_transforms)
