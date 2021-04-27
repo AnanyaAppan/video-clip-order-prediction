@@ -45,7 +45,7 @@ def train(args, model, criterion, optimizer, device, train_dataloader, writer, e
     time_start = time.time()
     for i, data in enumerate(train_dataloader, 1):
         # get inputs
-        # print("retrieval time = {:.2f} s".format(time.time() - time_start))
+        print("retrieval time = {:.2f} s".format(time.time() - time_start))
         if(i > train_batches_per_epoch): break
         tuple_clips, tuple_orders = data
         if(tuple_clips == []): continue
@@ -57,12 +57,12 @@ def train(args, model, criterion, optimizer, device, train_dataloader, writer, e
         # forward and backward
         before_fpass = time.time()
         outputs = model(inputs) # return logits here
-        # print("forward pass time = {:.2f} s".format(time.time() - before_fpass))
+        print("forward pass time = {:.2f} s".format(time.time() - before_fpass))
         before_bpass = time.time()
         loss = criterion(outputs, targets)
         loss.backward()
         optimizer.step()
-        # print("backward pass time = {:.2f} s".format(time.time() - before_fpass))
+        print("backward pass time = {:.2f} s".format(time.time() - before_fpass))
         # compute loss and acc
         running_loss += loss.item()
         pts = torch.argmax(outputs, dim=1)
