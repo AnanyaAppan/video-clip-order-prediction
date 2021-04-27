@@ -189,7 +189,7 @@ if __name__ == '__main__':
     elif args.model == 'i3d':
         base = InceptionI3d(600,in_channels=3)
     # vcopn = VCOPN(base_network=base, feature_size=512, tuple_len=args.tl).to(device)
-    vcopn = VCOPN(base_network=base, feature_size=4096, tuple_len=args.tl).to(device) # for i3d
+    vcopn = VCOPN(base_network=base, feature_size=2048, tuple_len=args.tl).to(device) # for i3d
 
     if args.mode == 'train':  ########### Train #############
         if args.ckpt:  # resume training
