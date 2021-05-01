@@ -189,9 +189,9 @@ if __name__ == '__main__':
     elif args.model == 'i3d':
         base = InceptionI3d(400,in_channels=3)
         base.load_state_dict(torch.load('../pytorch-i3d/models/rgb_imagenet.pt'))
-    for param in base.parameters():
+    for name,param in base.named_parameters():
         param.requires_grad = False
-        print(param)
+        print(name)
     # vcopn = VCOPN(base_network=base, feature_size=512, tuple_len=args.tl).to(device)
     vcopn = VCOPN(base_network=base, feature_size=512, tuple_len=args.tl).to(device) # for i3d
 
@@ -241,7 +241,7 @@ if __name__ == '__main__':
 
         ### loss funciton, optimizer and scheduler ###
         criterion = nn.CrossEntropyLoss()
-        optimizer = optim.SGD(vcopn.parameters(), lr=args.lr, momentum=args.momentum, weight_decay=args.wd)
+        optimizer = optim.SGD(filter(lambda p: p.requires_grad, vcopn.parameters()), lr=args.lr, momentum=args.momentum, weight_decay=args.wd)
         scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, 'min', min_lr=1e-5, patience=50, factor=0.1)
 
         prev_best_val_loss = float('inf')
