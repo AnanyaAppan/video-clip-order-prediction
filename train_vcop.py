@@ -188,7 +188,7 @@ if __name__ == '__main__':
         base = R2Plus1DNet(layer_sizes=(1,1,1,1), with_classifier=False)
     elif args.model == 'i3d':
         base = InceptionI3d(400,in_channels=3)
-        i3d.load_state_dict(torch.load('../pytorch-i3d/models/rgb_imagenet.pt'))
+        base.load_state_dict(torch.load('../pytorch-i3d/models/rgb_imagenet.pt'))
     for param in model.parameters():
         param.requires_grad = False
         print(param)
