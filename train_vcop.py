@@ -189,7 +189,7 @@ if __name__ == '__main__':
     elif args.model == 'i3d':
         base = InceptionI3d(400,in_channels=3)
         base.load_state_dict(torch.load('../pytorch-i3d/models/rgb_imagenet.pt'))
-    for param in model.parameters():
+    for param in base.parameters():
         param.requires_grad = False
         print(param)
     # vcopn = VCOPN(base_network=base, feature_size=512, tuple_len=args.tl).to(device)
