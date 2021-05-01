@@ -142,7 +142,7 @@ def test(args, model, criterion, device, test_dataloader):
 def parse_args():
     parser = argparse.ArgumentParser(description='Video Clip Order Prediction')
     parser.add_argument('--mode', type=str, default='train', help='train/test')
-    parser.add_argument('--model', type=str, default='c3d', help='c3d/r3d/r21d')
+    parser.add_argument('--model', type=str, default='i3d', help='c3d/r3d/r21d')
     parser.add_argument('--cl', type=int, default=16, help='clip length')
     parser.add_argument('--it', type=int, default=8, help='interval')
     parser.add_argument('--tl', type=int, default=3, help='tuple length')
@@ -187,7 +187,11 @@ if __name__ == '__main__':
     elif args.model == 'r21d':   
         base = R2Plus1DNet(layer_sizes=(1,1,1,1), with_classifier=False)
     elif args.model == 'i3d':
-        base = InceptionI3d(600,in_channels=3)
+        base = InceptionI3d(400,in_channels=3)
+        i3d.load_state_dict(torch.load('../pytorch-i3d/models/rgb_imagenet.pt'))
+    for param in model.parameters():
+        param.requires_grad = False
+        print(param)
     # vcopn = VCOPN(base_network=base, feature_size=512, tuple_len=args.tl).to(device)
     vcopn = VCOPN(base_network=base, feature_size=512, tuple_len=args.tl).to(device) # for i3d
 
@@ -206,8 +210,8 @@ if __name__ == '__main__':
         train_transforms = transforms.Compose([
             # transforms.Resize((128, 171)),  # smaller edge to 128
             # transforms.RandomCrop(112),
-            transforms.Resize((113, 113)),  
-            transforms.RandomCrop(113),
+            transforms.Resize((226, 226)),  
+            transforms.RandomCrop(226),
             transforms.ToTensor()
         ])
         train_dataset = UCF101VCOPDataset('/home/hdd2/ananya/Autism/ActivityNet/Crawler/Kinetics/', args.cl, args.it, args.tl, True, train_transforms)
