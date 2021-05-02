@@ -18,7 +18,7 @@ for index, row in data.iterrows():
         data.drop(index, inplace=True)
     else : num += 1
     if(num == 50): break
-data.to_csv("./kinetics-600_train_req_labels.csv")
+data.to_csv("./kinetics-600_train_50.csv")
 
 # data = pd.read_excel("req_classes.ods")
 # print('argui' in data["req_labels"].values)
