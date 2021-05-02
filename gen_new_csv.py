@@ -5,6 +5,7 @@ from os import path
 root = "/home/hdd2/ananya/Autism/ActivityNet/Crawler/Kinetics/"
 data = pd.read_csv(root + "data/kinetics-600_train.csv")
 req_labels = pd.read_excel("req_classes.ods")["req_labels"].values
+num = 0
 for index, row in data.iterrows():
     label = row["label"]
     videoname = row["youtube_id"]
@@ -15,6 +16,8 @@ for index, row in data.iterrows():
     if (not path.exists(filename)) or (label not in req_labels):
         print("dropped" + str(index))
         data.drop(index, inplace=True)
+    else : num += 1
+    if(num == 50): break
 data.to_csv("./kinetics-600_train_req_labels.csv")
 
 # data = pd.read_excel("req_classes.ods")
