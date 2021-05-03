@@ -93,7 +93,9 @@ def validate(args, model, criterion, device, val_dataloader, writer, epoch):
         # get inputs
         if(i > 500): break
         tuple_clips, tuple_orders = data
-        if(tuple_clips==[]): continue
+        if(tuple_clips==[]): 
+            print("Too small!")
+            continue
         inputs = tuple_clips.to(device)
         targets = [order_class_index(order) for order in tuple_orders]
         targets = torch.tensor(targets).to(device)
@@ -190,7 +192,7 @@ if __name__ == '__main__':
         base = InceptionI3d(400,in_channels=3)
         base.load_state_dict(torch.load('../pytorch-i3d/models/rgb_imagenet.pt'))
     for name,param in base.named_parameters():
-        if('Mixed_5c' not in name):
+        if(('Mixed_5c' not in name) and ('Mixed_5b' not in name)):
             param.requires_grad = False
     # vcopn = VCOPN(base_network=base, feature_size=512, tuple_len=args.tl).to(device)
     vcopn = VCOPN(base_network=base, feature_size=1024, tuple_len=args.tl).to(device) # for i3d
