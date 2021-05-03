@@ -43,12 +43,16 @@ def train(args, model, criterion, optimizer, device, train_dataloader, writer, e
     running_loss = 0.0
     correct = 0
     # time_start = time.time()
+    total_small = 0
     for i, data in enumerate(train_dataloader, 1):
         # get inputs
         # print("retrieval time = {:.2f} s".format(time.time() - time_start))
         if(i > train_batches_per_epoch): break
         tuple_clips, tuple_orders = data
-        if(tuple_clips == []): continue
+        if(tuple_clips == []): 
+            print('too small!')
+            total_small += 1
+            continue
         inputs = tuple_clips.to(device)
         targets = [order_class_index(order) for order in tuple_orders]
         targets = torch.tensor(targets).to(device)
@@ -69,8 +73,8 @@ def train(args, model, criterion, optimizer, device, train_dataloader, writer, e
         correct += torch.sum(targets == pts).item()
         # print statistics and write summary every N batch
         if i % args.pf == 0:
-            avg_loss = running_loss / args.pf
-            avg_acc = correct / (args.pf * args.bs)
+            avg_loss = running_loss / (args.pf-total_small)
+            avg_acc = correct / ((args.pf-total_small) * args.bs)
             print('[TRAIN] epoch-{}, batch-{}, loss: {:.3f}, acc: {:.3f}'.format(epoch, i, avg_loss, avg_acc))
             step = (epoch-1)*train_batches_per_epoch*args.bs + i
             writer.add_scalar('train/CrossEntropyLoss', avg_loss, step)
@@ -89,11 +93,13 @@ def validate(args, model, criterion, device, val_dataloader, writer, epoch):
     
     total_loss = 0.0
     correct = 0
+    total_small = 0
     for i, data in enumerate(val_dataloader):
         # get inputs
         if(i > 500): break
         tuple_clips, tuple_orders = data
         if(tuple_clips==[]): 
+            total_small += 1
             print("Too small!")
             continue
         inputs = tuple_clips.to(device)
@@ -107,8 +113,8 @@ def validate(args, model, criterion, device, val_dataloader, writer, epoch):
         pts = torch.argmax(outputs, dim=1)
         correct += torch.sum(targets == pts).item()
         # print('correct: {}, {}, {}'.format(correct, targets, pts))
-    avg_loss = total_loss / val_batches_per_epoch
-    avg_acc = correct / val_batches_per_epoch
+    avg_loss = total_loss / (val_batches_per_epoch-total_small)
+    avg_acc = correct / (val_batches_per_epoch-total_small)
     writer.add_scalar('val/CrossEntropyLoss', avg_loss, epoch)
     writer.add_scalar('val/Accuracy', avg_acc, epoch)
     print('[VAL] loss: {:.3f}, acc: {:.3f}'.format(avg_loss, avg_acc))
