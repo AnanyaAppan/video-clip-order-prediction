@@ -4,7 +4,7 @@ from os import path
 
 root = "/home/hdd2/ananya/Autism/ActivityNet/Crawler/Kinetics/"
 data = pd.read_csv(root + "data/kinetics-600_train.csv")
-req_labels = pd.read_excel("super_req_classes.ods")["labels"].values
+req_labels = pd.read_excel("super_req_classes.ods")["Labels"].values
 num = {}
 for index, row in data.iterrows():
     label = row["label"]
