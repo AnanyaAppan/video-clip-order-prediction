@@ -17,7 +17,7 @@ for index, row in data.iterrows():
         print("dropped" + str(index))
         data.drop(index, inplace=True)
     else : 
-        if num.has_key(label):
+        if label in num:
             if(num[label] < 130):
                 num[label] = num[label] + 1
             else:
