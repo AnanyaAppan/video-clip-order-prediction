@@ -4,8 +4,8 @@ from os import path
 
 root = "/home/hdd2/ananya/Autism/ActivityNet/Crawler/Kinetics/"
 data = pd.read_csv(root + "data/kinetics-600_train.csv")
-# req_labels = pd.read_excel("req_classes.ods")["req_labels"].values
-num = 0
+req_labels = pd.read_excel("super_req_classes.ods")["labels"].values
+num = {}
 for index, row in data.iterrows():
     label = row["label"]
     videoname = row["youtube_id"]
@@ -13,13 +13,19 @@ for index, row in data.iterrows():
     end_time = row["time_end"]
     videofile = videoname+'_'+str(start_time).zfill(6)+'_'+str(end_time).zfill(6)+".mp4"
     filename = os.path.join(root, 'dataset', label, videofile)
-    if (not path.exists(filename)) or (label != 'climbing ladder'):
+    if (not path.exists(filename)) or (label not in req_labels):
         print("dropped" + str(index))
         data.drop(index, inplace=True)
-    else : num += 1
-    if(num == 150): break
-data = data[:150]
-data.to_csv("./kinetics-600_train_150.csv")
+    else : 
+        if num.has_key(label):
+            if(num[label] < 130):
+                num[label] = num[label] + 1
+            else:
+                print("dropped" + str(index))
+                data.drop(index, inplace=True)
+        else :
+            num[label] = 1
+data.to_csv("./kinetics-600_train_super_req.csv")
 
 # data = pd.read_excel("req_classes.ods")
 # print('argui' in data["req_labels"].values)
