@@ -8,13 +8,12 @@ data = pd.read_csv(root + "data/kinetics-600_train.csv")
 num = 0
 for index, row in data.iterrows():
     label = row["label"]
-    if(label != 'climbing ladder'): continue
     videoname = row["youtube_id"]
     start_time = row["time_start"]
     end_time = row["time_end"]
     videofile = videoname+'_'+str(start_time).zfill(6)+'_'+str(end_time).zfill(6)+".mp4"
     filename = os.path.join(root, 'dataset', label, videofile)
-    if (not path.exists(filename)) or (label not in req_labels):
+    if (not path.exists(filename)) or (label != 'climbing ladder'):
         print("dropped" + str(index))
         data.drop(index, inplace=True)
     else : num += 1
