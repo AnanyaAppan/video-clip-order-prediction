@@ -4,10 +4,11 @@ from os import path
 
 root = "/home/hdd2/ananya/Autism/ActivityNet/Crawler/Kinetics/"
 data = pd.read_csv(root + "data/kinetics-600_train.csv")
-req_labels = pd.read_excel("req_classes.ods")["req_labels"].values
+# req_labels = pd.read_excel("req_classes.ods")["req_labels"].values
 num = 0
 for index, row in data.iterrows():
     label = row["label"]
+    if(label != 'climbing ladder'): continue
     videoname = row["youtube_id"]
     start_time = row["time_start"]
     end_time = row["time_end"]
@@ -17,8 +18,8 @@ for index, row in data.iterrows():
         print("dropped" + str(index))
         data.drop(index, inplace=True)
     else : num += 1
-    if(num == 50): break
-data = data[:50]
+    if(num == 150): break
+data = data[:150]
 data.to_csv("./kinetics-600_train_50.csv")
 
 # data = pd.read_excel("req_classes.ods")
