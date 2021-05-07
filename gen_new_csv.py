@@ -20,7 +20,7 @@ for index, row in data.iterrows():
     else : num += 1
     if(num == 150): break
 data = data[:150]
-data.to_csv("./kinetics-600_train_50.csv")
+data.to_csv("./kinetics-600_train_150.csv")
 
 # data = pd.read_excel("req_classes.ods")
 # print('argui' in data["req_labels"].values)
