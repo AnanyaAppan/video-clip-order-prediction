@@ -3,8 +3,8 @@ import os.path
 from os import path
 
 root = "/home/hdd2/ananya/Autism/ActivityNet/Crawler/Kinetics/"
-data = pd.read_csv(root + "data/kinetics-600_train.csv")
-req_labels = pd.read_excel("super_req_classes.ods")["Labels"].values
+data = pd.read_csv(root + "data/kinetics-600_train_super_req.csv")
+req_labels = pd.read_excel("super_super_req_classes.ods")["Labels"].values
 num = {}
 for index, row in data.iterrows():
     label = row["label"]
@@ -25,7 +25,7 @@ for index, row in data.iterrows():
                 data.drop(index, inplace=True)
         else :
             num[label] = 1
-data.to_csv("./kinetics-600_train_super_req.csv")
+data.to_csv("./kinetics-600_train_super_super_req.csv")
 
 # data = pd.read_excel("req_classes.ods")
 # print('argui' in data["req_labels"].values)
