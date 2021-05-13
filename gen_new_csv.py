@@ -1,6 +1,7 @@
 import pandas as pd
 import os.path
 from os import path
+import skvideo.io
 
 root = "/home/hdd2/ananya/Autism/ActivityNet/Crawler/Kinetics/"
 data = pd.read_csv(root + "data/kinetics-600_train_super_req.csv")
