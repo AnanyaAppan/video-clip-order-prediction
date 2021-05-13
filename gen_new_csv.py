@@ -14,12 +14,19 @@ for index, row in data.iterrows():
     end_time = row["time_end"]
     videofile = videoname+'_'+str(start_time).zfill(6)+'_'+str(end_time).zfill(6)+".mp4"
     filename = os.path.join(root, 'dataset', label, videofile)
-    videodata = skvideo.io.vread(filename)
-    length, height, width, channel = videodata.shape
-    if (not path.exists(filename)) or (label not in req_labels) or (length < 80):
+    if (not path.exists(filename)) or (label not in req_labels):
         print("dropped" + str(index))
         data.drop(index, inplace=True)
     else : 
+        try:
+            videodata = skvideo.io.vread(filename)
+        except:
+            print("dropped" + str(index))
+            data.drop(index, inplace=True)
+        length, height, width, channel = videodata.shape
+        if(length < 80): 
+            print("dropped" + str(index))
+            data.drop(index, inplace=True)
         if label in num:
             if(num[label] < 130):
                 num[label] = num[label] + 1
