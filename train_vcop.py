@@ -219,7 +219,7 @@ if __name__ == '__main__':
         ])
         train_dataset = UCF101VCOPDataset('/home/hdd2/ananya/Autism/ActivityNet/Crawler/Kinetics/', args.cl, args.it, args.tl, True, train_transforms)
         # split val for 800 videos
-        train_dataset, val_dataset = random_split(train_dataset, (len(train_dataset)-60, 60))
+        train_dataset, val_dataset = random_split(train_dataset, (len(train_dataset)-20, 20))
         print('TRAIN video number: {}, VAL video number: {}.'.format(len(train_dataset), len(val_dataset)))
         train_dataloader = DataLoader(train_dataset, batch_size=args.bs, shuffle=True,
                                     num_workers=args.workers, pin_memory=True)
