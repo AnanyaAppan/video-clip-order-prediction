@@ -93,6 +93,7 @@ def validate(args, model, criterion, device, val_dataloader, writer, epoch):
     total_small = 0
     for i, data in enumerate(val_dataloader):
         # get inputs
+        if(i > 10) : break
         tuple_clips, tuple_orders = data
         if(tuple_clips==[]): 
             total_small += 1
@@ -109,8 +110,10 @@ def validate(args, model, criterion, device, val_dataloader, writer, epoch):
         pts = torch.argmax(outputs, dim=1)
         correct += torch.sum(targets == pts).item()
         # print('correct: {}, {}, {}'.format(correct, targets, pts))
-    avg_loss = total_loss / (len(val_dataloader)-total_small)
-    avg_acc = correct / (len(val_dataloader.dataset)-total_small)
+    avg_loss = total_loss / (10-total_small)
+    avg_acc = correct / (10-total_small)
+    # avg_loss = total_loss / (len(val_dataloader)-total_small)
+    # avg_acc = correct / (len(val_dataloader.dataset)-total_small)
     writer.add_scalar('val/CrossEntropyLoss', avg_loss, epoch)
     writer.add_scalar('val/Accuracy', avg_acc, epoch)
     print('[VAL] loss: {:.3f}, acc: {:.3f}'.format(avg_loss, avg_acc))
