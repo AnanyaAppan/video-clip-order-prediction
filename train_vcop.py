@@ -42,7 +42,7 @@ def train(args, model, criterion, optimizer, device, train_dataloader, writer, e
     # time_start = time.time()
     total_small = 0
     for i, data in enumerate(train_dataloader, 1):
-        if i > 40: break
+        if i*args.bs > 40: break
         # get inputs
         # print("retrieval time = {:.2f} s".format(time.time() - time_start))
         tuple_clips, tuple_orders = data
@@ -93,7 +93,7 @@ def validate(args, model, criterion, device, val_dataloader, writer, epoch):
     total_small = 0
     for i, data in enumerate(val_dataloader):
         # get inputs
-        if(i > 10) : break
+        if(i*args.bs > 16) : break
         tuple_clips, tuple_orders = data
         if(tuple_clips==[]): 
             total_small += 1
@@ -110,8 +110,8 @@ def validate(args, model, criterion, device, val_dataloader, writer, epoch):
         pts = torch.argmax(outputs, dim=1)
         correct += torch.sum(targets == pts).item()
         # print('correct: {}, {}, {}'.format(correct, targets, pts))
-    avg_loss = total_loss / (10-total_small)
-    avg_acc = correct / (10*args.bs-total_small)
+    avg_loss = total_loss / (16-total_small)
+    avg_acc = correct / (16-total_small)
     # avg_loss = total_loss / (len(val_dataloader)-total_small)
     # avg_acc = correct / (len(val_dataloader.dataset)-total_small)
     writer.add_scalar('val/CrossEntropyLoss', avg_loss, epoch)
