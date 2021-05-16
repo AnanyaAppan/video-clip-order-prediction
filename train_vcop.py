@@ -111,7 +111,7 @@ def validate(args, model, criterion, device, val_dataloader, writer, epoch):
         correct += torch.sum(targets == pts).item()
         # print('correct: {}, {}, {}'.format(correct, targets, pts))
     avg_loss = total_loss / (10-total_small)
-    avg_acc = correct / (10-total_small)
+    avg_acc = correct / (10*args.bs-total_small)
     # avg_loss = total_loss / (len(val_dataloader)-total_small)
     # avg_acc = correct / (len(val_dataloader.dataset)-total_small)
     writer.add_scalar('val/CrossEntropyLoss', avg_loss, epoch)
