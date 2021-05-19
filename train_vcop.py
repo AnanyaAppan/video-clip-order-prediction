@@ -199,8 +199,8 @@ if __name__ == '__main__':
     # for name,param in base.named_parameters():
     #     if('Mixed_5c' not in name):
     #         param.requires_grad = False
-    # vcopn = VCOPN(base_network=base, feature_size=512, tuple_len=args.tl).to(device)
-    vcopn = VCOPN(base_network=base, feature_size=1024, tuple_len=args.tl).to(device) # for i3d
+    vcopn = VCOPN(base_network=base, feature_size=512, tuple_len=args.tl).to(device)
+    # vcopn = VCOPN(base_network=base, feature_size=1024, tuple_len=args.tl).to(device) # for i3d
 
     if args.mode == 'train':  ########### Train #############
         if args.ckpt:  # resume training
