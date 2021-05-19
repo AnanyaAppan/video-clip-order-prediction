@@ -287,7 +287,6 @@ class UCF101VCOPDataset(Dataset):
                     random.seed(seed)
                     frame = self.toPIL(frame) # PIL image
                     frame = self.transforms_(frame) # tensor [C x H x W]
-                    frame = (frame/255.)*2 - 1
                     trans_clip.append(frame)
                 # (T x C X H x W) to (C X T x H x W)
                 trans_clip = torch.stack(trans_clip).permute([1, 0, 2, 3])
